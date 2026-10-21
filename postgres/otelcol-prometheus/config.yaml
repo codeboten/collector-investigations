@@ -1,0 +1,24 @@
+# The prometheus distribution ships no resource/batch processors, so there are
+# none here.
+receivers:
+  # Embedded prometheus-community/postgres_exporter.
+  postgres_exporter:
+    scrape_interval: 15s
+    exporter_config:
+      data_source_names:
+        - postgresql://${env:PG_MONITOR_USER}:${env:PG_MONITOR_PASSWORD}@postgres:5432/postgres?sslmode=disable
+      # Every database except templates, matching the postgresql receiver.
+      auto_discover_databases: true
+      exclude_databases: [template0, template1]
+
+exporters:
+  otlphttp/local:
+    endpoint: http://local-collector:4319
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [postgres_exporter]
+      exporters: [otlphttp/local]

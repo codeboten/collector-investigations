@@ -1,0 +1,63 @@
+name: postgres-metrics-comparison
+
+x-pg-env: &pg-env
+  PG_MONITOR_USER: ${PG_MONITOR_USER:-otel_monitor}
+  PG_MONITOR_PASSWORD: ${PG_MONITOR_PASSWORD:-monitor_pass}
+
+x-collector-deps: &collector-deps
+  postgres:
+    condition: service_healthy
+  local-collector:
+    condition: service_started
+
+services:
+  postgres:
+    image: docker.io/library/postgres:17
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
+    environment:
+      <<: *pg-env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Pipeline 1: OpenTelemetry Collector Contrib, `postgresql` receiver.
+  otelcol-postgresql:
+    image: docker.io/otel/opentelemetry-collector-contrib:0.163.2
+    depends_on: *collector-deps
+    volumes:
+      - ./otelcol-postgresql/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    environment: *pg-env
+
+  # Pipeline 2: opentelemetry-collector-prometheus distribution, embedded
+  # postgres_exporter receiver.
+  otelcol-prometheus:
+    image: docker.io/otel/opentelemetry-collector-prometheus:0.163.2
+    command: ["--config=/etc/otelcol/config.yaml"]
+    depends_on: *collector-deps
+    volumes:
+      - ./otelcol-prometheus/config.yaml:/etc/otelcol/config.yaml:ro
+    environment: *pg-env
+
+  # Pipeline 3: the same `postgresql` receiver as pipeline 1, with its output
+  # renamed to postgres_exporter's metric/label names.
+  otelcol-postgresql-pgnames:
+    image: docker.io/otel/opentelemetry-collector-contrib:0.163.2
+    depends_on: *collector-deps
+    volumes:
+      - ./otelcol-postgresql-pgnames/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    environment: *pg-env
+
+  # Sink: exposes each pipeline's metrics in Prometheus format.
+  local-collector:
+    image: docker.io/otel/opentelemetry-collector-contrib:0.163.2
+    volumes:
+      - ./local-collector/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "8889:8889" # pipeline 1: postgresql receiver          (postgresql_*)
+      - "8890:8890" # pipeline 2: prometheus distribution      (pg_*)
+      - "8891:8891" # pipeline 3: postgresql receiver + rename (pg_*)

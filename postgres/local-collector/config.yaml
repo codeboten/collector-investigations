@@ -1,0 +1,52 @@
+# Receives each pipeline's OTLP on its own port and re-exposes it as its own
+# Prometheus endpoint, so the outputs can be compared side by side.
+receivers:
+  otlp/postgresql:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+  otlp/prometheus:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4319
+  otlp/pgnames:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4320
+
+processors:
+  # postgres_exporter's pg_stat_database collector ignores exclude_databases and
+  # always reports template0/template1; the postgresql receiver never does.
+  # Drop them so every pipeline covers the same databases.
+  filter/templates:
+    error_mode: ignore
+    metrics:
+      datapoint:
+        - 'attributes["datname"] == "template0" or attributes["datname"] == "template1"'
+
+exporters:
+  prometheus/postgresql:
+    endpoint: 0.0.0.0:8889
+    resource_to_telemetry_conversion:
+      enabled: true
+  prometheus/prometheus:
+    endpoint: 0.0.0.0:8890
+    resource_to_telemetry_conversion:
+      enabled: true
+  prometheus/pgnames:
+    endpoint: 0.0.0.0:8891
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  pipelines:
+    metrics/postgresql:
+      receivers: [otlp/postgresql]
+      exporters: [prometheus/postgresql]
+    metrics/prometheus:
+      receivers: [otlp/prometheus]
+      processors: [filter/templates]
+      exporters: [prometheus/prometheus]
+    metrics/pgnames:
+      receivers: [otlp/pgnames]
+      exporters: [prometheus/pgnames]

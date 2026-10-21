@@ -1,0 +1,385 @@
+# Same `postgresql` receiver as ../otelcol-postgresql, with its output renamed to
+# postgres_exporter's metric and label names.
+receivers:
+  postgresql:
+    endpoint: postgres:5432
+    transport: tcp
+    username: ${env:PG_MONITOR_USER}
+    password: ${env:PG_MONITOR_PASSWORD}
+    collection_interval: 15s
+    # Empty = every non-template database, discovered on each scrape.
+    databases: []
+    tls:
+      insecure: true
+    metrics:
+      postgresql.blks_hit:
+        enabled: true
+      postgresql.blks_read:
+        enabled: true
+      postgresql.database.locks:
+        enabled: true
+      postgresql.deadlocks:
+        enabled: true
+      postgresql.function.calls:
+        enabled: true
+      postgresql.query.conflicts:
+        enabled: true
+      postgresql.query.execution.time:
+        enabled: true
+      postgresql.sequential_scans:
+        enabled: true
+      postgresql.temp.io:
+        enabled: true
+      postgresql.temp_files:
+        enabled: true
+      postgresql.tup_deleted:
+        enabled: true
+      postgresql.tup_fetched:
+        enabled: true
+      postgresql.tup_inserted:
+        enabled: true
+      postgresql.tup_returned:
+        enabled: true
+      postgresql.tup_updated:
+        enabled: true
+      postgresql.wal.delay:
+        enabled: true
+      postgresql.vector.insert.duration:
+        enabled: true
+      postgresql.vector.insert.rows:
+        enabled: true
+      postgresql.vector.search.calls:
+        enabled: true
+      postgresql.vector.search.duration:
+        enabled: true
+      postgresql.vector.search.rows_returned:
+        enabled: true
+
+processors:
+  # Renames postgresql receiver output to the metric/label names of
+  # postgres_exporter (see METRICS-COMPARISON.md). Unmapped postgresql.* metrics
+  # are dropped by filter/pgnames.
+  transform/pgnames:
+    error_mode: ignore
+    metric_statements:
+      - context: datapoint
+        statements:
+          # database/table are resource attributes on this receiver; metricstransform
+          # only sees datapoint labels, so copy them down first.
+          - set(attributes["datname"], resource.attributes["postgresql.database.name"]) where resource.attributes["postgresql.database.name"] != nil
+          - set(attributes["schemaname"], Split(resource.attributes["postgresql.table.name"], ".")[0]) where resource.attributes["postgresql.table.name"] != nil and IsMatch(resource.attributes["postgresql.table.name"], "\\.")
+          - set(attributes["relname"], Split(resource.attributes["postgresql.table.name"], ".")[1]) where resource.attributes["postgresql.table.name"] != nil and IsMatch(resource.attributes["postgresql.table.name"], "\\.")
+          - set(attributes["mode"], ConvertCase(attributes["mode"], "lower")) where attributes["mode"] != nil
+      - context: resource
+        statements:
+          - delete_key(attributes, "postgresql.database.name")
+          - delete_key(attributes, "postgresql.table.name")
+  metricstransform/pgnames:
+    transforms:
+      - include: postgresql.backends
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_numbackends
+      - include: postgresql.bgwriter.buffers.allocated
+        match_type: strict
+        action: insert
+        new_name: pg_stat_bgwriter_buffers_alloc
+      - include: postgresql.bgwriter.buffers.writes
+        match_type: strict
+        action: insert
+        new_name: pg_stat_bgwriter_buffers_clean
+        experimental_match_labels:
+          "source": "bgwriter"
+        operations:
+          - action: aggregate_labels
+            label_set: []
+            aggregation_type: sum
+      - include: postgresql.bgwriter.maxwritten
+        match_type: strict
+        action: insert
+        new_name: pg_stat_bgwriter_maxwritten_clean
+      - include: postgresql.blks_hit
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_blks_hit
+      - include: postgresql.blks_read
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_blks_read
+      - include: postgresql.commits
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_xact_commit
+      - include: postgresql.rollbacks
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_xact_rollback
+      - include: postgresql.deadlocks
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_deadlocks
+      - include: postgresql.temp_files
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_temp_files
+      - include: postgresql.temp.io
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_temp_bytes
+      - include: postgresql.db_size
+        match_type: strict
+        action: insert
+        new_name: pg_database_size_bytes
+      - include: postgresql.connection.max
+        match_type: strict
+        action: insert
+        new_name: pg_settings_max_connections
+      - include: postgresql.table.size
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_table_size_bytes
+      - include: postgresql.sequential_scans
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_seq_scan
+      - include: postgresql.table.vacuum.count
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_vacuum_count
+      - include: postgresql.tup_fetched
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_tup_fetched
+      - include: postgresql.tup_inserted
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_tup_inserted
+      - include: postgresql.tup_returned
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_tup_returned
+      - include: postgresql.tup_updated
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_tup_updated
+      - include: postgresql.tup_deleted
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_tup_deleted
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_heap_blocks_hit
+        experimental_match_labels:
+          "source": "heap_hit"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_heap_blocks_read
+        experimental_match_labels:
+          "source": "heap_read"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_idx_blocks_hit
+        experimental_match_labels:
+          "source": "idx_hit"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_idx_blocks_read
+        experimental_match_labels:
+          "source": "idx_read"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_toast_blocks_hit
+        experimental_match_labels:
+          "source": "toast_hit"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_toast_blocks_read
+        experimental_match_labels:
+          "source": "toast_read"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_tidx_blocks_hit
+        experimental_match_labels:
+          "source": "tidx_hit"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.blocks_read
+        match_type: strict
+        action: insert
+        new_name: pg_statio_user_tables_tidx_blocks_read
+        experimental_match_labels:
+          "source": "tidx_read"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.operations
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_n_tup_ins
+        experimental_match_labels:
+          "operation": "ins"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.operations
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_n_tup_upd
+        experimental_match_labels:
+          "operation": "upd"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.operations
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_n_tup_del
+        experimental_match_labels:
+          "operation": "del"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.operations
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_n_tup_hot_upd
+        experimental_match_labels:
+          "operation": "hot_upd"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.rows
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_n_live_tup
+        experimental_match_labels:
+          "state": "live"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.rows
+        match_type: strict
+        action: insert
+        new_name: pg_stat_user_tables_n_dead_tup
+        experimental_match_labels:
+          "state": "dead"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, relname, schemaname]
+            aggregation_type: sum
+      - include: postgresql.query.conflicts
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_conflicts_confl_bufferpin
+        experimental_match_labels:
+          "postgresql.conflict.type": "bufferpin"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname]
+            aggregation_type: sum
+      - include: postgresql.query.conflicts
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_conflicts_confl_deadlock
+        experimental_match_labels:
+          "postgresql.conflict.type": "deadlock"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname]
+            aggregation_type: sum
+      - include: postgresql.query.conflicts
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_conflicts_confl_lock
+        experimental_match_labels:
+          "postgresql.conflict.type": "lock"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname]
+            aggregation_type: sum
+      - include: postgresql.query.conflicts
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_conflicts_confl_snapshot
+        experimental_match_labels:
+          "postgresql.conflict.type": "snapshot"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname]
+            aggregation_type: sum
+      - include: postgresql.query.conflicts
+        match_type: strict
+        action: insert
+        new_name: pg_stat_database_conflicts_confl_tablespace
+        experimental_match_labels:
+          "postgresql.conflict.type": "tablespace"
+        operations:
+          - action: aggregate_labels
+            label_set: [datname]
+            aggregation_type: sum
+      # lock counts per (db, mode), as pg_locks_count
+      - include: postgresql.database.locks
+        match_type: strict
+        action: insert
+        new_name: pg_locks_count
+        operations:
+          - action: aggregate_labels
+            label_set: [datname, mode]
+            aggregation_type: sum
+  filter/pgnames:
+    error_mode: ignore
+    metrics:
+      metric:
+        - 'IsMatch(name, "^postgresql\\..*")'
+
+exporters:
+  otlp_http/local:
+    endpoint: http://local-collector:4320
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [postgresql]
+      processors: [transform/pgnames, metricstransform/pgnames, filter/pgnames]
+      exporters: [otlp_http/local]

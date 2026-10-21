@@ -1,0 +1,66 @@
+receivers:
+  postgresql:
+    endpoint: postgres:5432
+    transport: tcp
+    username: ${env:PG_MONITOR_USER}
+    password: ${env:PG_MONITOR_PASSWORD}
+    collection_interval: 15s
+    # Empty = every non-template database, discovered on each scrape.
+    databases: []
+    tls:
+      insecure: true
+    metrics:
+      postgresql.blks_hit:
+        enabled: true
+      postgresql.blks_read:
+        enabled: true
+      postgresql.database.locks:
+        enabled: true
+      postgresql.deadlocks:
+        enabled: true
+      postgresql.function.calls:
+        enabled: true
+      postgresql.query.conflicts:
+        enabled: true
+      postgresql.query.execution.time:
+        enabled: true
+      postgresql.sequential_scans:
+        enabled: true
+      postgresql.temp.io:
+        enabled: true
+      postgresql.temp_files:
+        enabled: true
+      postgresql.tup_deleted:
+        enabled: true
+      postgresql.tup_fetched:
+        enabled: true
+      postgresql.tup_inserted:
+        enabled: true
+      postgresql.tup_returned:
+        enabled: true
+      postgresql.tup_updated:
+        enabled: true
+      postgresql.wal.delay:
+        enabled: true
+      postgresql.vector.insert.duration:
+        enabled: true
+      postgresql.vector.insert.rows:
+        enabled: true
+      postgresql.vector.search.calls:
+        enabled: true
+      postgresql.vector.search.duration:
+        enabled: true
+      postgresql.vector.search.rows_returned:
+        enabled: true
+
+exporters:
+  otlp_http/local:
+    endpoint: http://local-collector:4318
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [postgresql]
+      exporters: [otlp_http/local]
