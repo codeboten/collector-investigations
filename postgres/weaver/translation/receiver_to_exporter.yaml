@@ -1,0 +1,47 @@
+# postgresql receiver -> postgres_exporter
+#
+# Direction: postgresql receiver -> postgres_exporter.
+# Only 1:1 renames are expressible in a schema file. The rest are transforms; see otelcol-postgresql-pgnames/config.yaml:
+#   * resource attrs postgresql.database.name / postgresql.table.name are demoted to data point labels datname / schemaname+relname
+#     (table.name is `schema.table` and is split on '.').
+#   * split by discriminator: blocks_read{source}, operations{operation}, rows{state}, query.conflicts{postgresql.conflict.type},
+#     bgwriter.buffers.writes{source=bgwriter}, bgwriter.checkpoint.count{type}, bgwriter.duration{type}.
+#   * postgresql.database.locks is summed over lock_type/relation; mode is lowercased.
+#   * no exporter equivalent: backends is fine, but function.calls, query.execution.time, vector.*, wal.age/delay, table.count,
+#     database.count, index.size have no postgres_exporter counterpart.
+file_format: 1.1.0
+schema_url: https://example.com/schemas/postgres_exporter/0.1.0
+versions:
+  0.1.0:
+  0.0.0:
+    all:
+      changes:
+        - rename_attributes:
+            attribute_map:
+              db.namespace: datname
+              db.collection.name: relname
+    metrics:
+      changes:
+        - rename_metrics:
+            postgresql.backends: pg_stat_database_numbackends
+            postgresql.bgwriter.buffers.allocated: pg_stat_bgwriter_buffers_alloc
+            postgresql.bgwriter.maxwritten: pg_stat_bgwriter_maxwritten_clean
+            postgresql.blks_hit: pg_stat_database_blks_hit
+            postgresql.blks_read: pg_stat_database_blks_read
+            postgresql.commits: pg_stat_database_xact_commit
+            postgresql.rollbacks: pg_stat_database_xact_rollback
+            postgresql.deadlocks: pg_stat_database_deadlocks
+            postgresql.temp_files: pg_stat_database_temp_files
+            postgresql.temp.io: pg_stat_database_temp_bytes
+            postgresql.db_size: pg_database_size_bytes
+            postgresql.connection.max: pg_settings_max_connections
+            postgresql.table.size: pg_stat_user_tables_table_size_bytes
+            postgresql.sequential_scans: pg_stat_user_tables_seq_scan
+            postgresql.table.vacuum.count: pg_stat_user_tables_vacuum_count
+            postgresql.index.scans: pg_stat_user_indexes_idx_scan
+            postgresql.tup_fetched: pg_stat_database_tup_fetched
+            postgresql.tup_inserted: pg_stat_database_tup_inserted
+            postgresql.tup_returned: pg_stat_database_tup_returned
+            postgresql.tup_updated: pg_stat_database_tup_updated
+            postgresql.tup_deleted: pg_stat_database_tup_deleted
+            postgresql.database.locks: pg_locks_count

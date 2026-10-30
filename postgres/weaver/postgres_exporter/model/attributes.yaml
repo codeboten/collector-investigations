@@ -1,0 +1,72 @@
+file_format: definition/2
+attributes:
+  - key: datname
+    type: string
+    examples: ["postgres"]
+    brief: "Database name."
+    stability: development
+  - key: datid
+    type: string
+    examples: ["5"]
+    brief: "Database OID."
+    stability: development
+  - key: schemaname
+    type: string
+    examples: ["public"]
+    brief: "Schema name."
+    stability: development
+  - key: relname
+    type: string
+    examples: ["pgbench_accounts"]
+    brief: "Table name."
+    stability: development
+  - key: indexrelname
+    type: string
+    examples: ["pgbench_accounts_pkey"]
+    brief: "Index name."
+    stability: development
+  - key: server
+    type: string
+    examples: ["postgres:5432"]
+    brief: "Target server (`host:port`)."
+    stability: development
+  - key: mode
+    type: string
+    examples: ["accesssharelock", "AccessShareLock"]
+    brief: "Lock mode (lowercase)."
+    stability: development
+  - key: state
+    type: string
+    examples: ["live", "active"]
+    brief: "Backend state."
+    stability: development
+  - key: usename
+    type: string
+    examples: ["postgres"]
+    brief: "Role name."
+    stability: development
+  - key: application_name
+    type: string
+    examples: ["pgbench"]
+    brief: "Client application name."
+    stability: development
+  - key: slot_name
+    type: string
+    examples: ["slot1"]
+    brief: "Replication slot."
+    stability: development
+  - key: queryid
+    type: string
+    examples: ["-1234567890"]
+    brief: "pg_stat_statements query id."
+    stability: development
+  - key: collector
+    type: string
+    examples: ["database"]
+    brief: "Exporter collector name."
+    stability: development
+  - key: version
+    type: string
+    examples: ["17.2"]
+    brief: "Server version."
+    stability: development

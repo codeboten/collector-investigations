@@ -1,0 +1,150 @@
+file_format: definition/2
+attributes:
+  - key: db.system.version
+    type: string
+    examples: ["17.2"]
+    brief: "PostgreSQL server version."
+    stability: development
+  - key: postgresql.database.name
+    type: string
+    examples: ["postgres"]
+    brief: "Database the data point is scoped to."
+    stability: development
+  - key: postgresql.schema.name
+    type: string
+    examples: ["public"]
+    brief: "Schema of the table or index."
+    stability: development
+  - key: postgresql.table.name
+    type: string
+    examples: ["public.pgbench_accounts"]
+    brief: "Table, as `schema.table`."
+    stability: development
+  - key: server.address
+    type: string
+    examples: ["postgres"]
+    brief: "Server host."
+    stability: development
+  - key: server.port
+    type: int
+    examples: [5432]
+    brief: "Server port."
+    stability: development
+  - key: service.instance.id
+    type: string
+    examples: ["postgres:5432"]
+    brief: "Instance id (`host:port`)."
+    stability: development
+  - key: service.name
+    type: string
+    examples: ["postgres"]
+    brief: "Service name."
+    stability: development
+  - key: service.namespace
+    type: string
+    examples: ["prod"]
+    brief: "Service namespace."
+    stability: development
+  - key: db.namespace
+    type: string
+    examples: ["postgres"]
+    brief: "Database name."
+    stability: development
+  - key: db.collection.name
+    type: string
+    examples: ["pgbench_accounts"]
+    brief: "Table name."
+    stability: development
+  - key: source
+    type: string
+    examples: ["heap_hit"]
+    brief: "Block source: heap_read, heap_hit, idx_read, idx_hit, toast_read, toast_hit, tidx_read, tidx_hit"
+    stability: development
+  - key: operation
+    type: string
+    examples: ["ins", "flush"]
+    brief: "Row operation: ins, upd, del, hot_upd (or flush/replay/write for WAL lag)."
+    stability: development
+  - key: state
+    type: string
+    examples: ["live", "active"]
+    brief: "Row state: live or dead."
+    stability: development
+  - key: type
+    type: string
+    examples: ["scheduled", "write"]
+    brief: "Checkpoint type (requested/scheduled) or bgwriter duration type (sync/write)."
+    stability: development
+  - key: function
+    type: string
+    examples: ["my_func"]
+    brief: "Function name."
+    stability: development
+  - key: lock_type
+    type: string
+    examples: ["relation"]
+    brief: "Lock type."
+    stability: development
+  - key: mode
+    type: string
+    examples: ["accesssharelock", "AccessShareLock"]
+    brief: "Lock mode."
+    stability: development
+  - key: relation
+    type: string
+    examples: ["pgbench_accounts"]
+    brief: "Locked relation."
+    stability: development
+  - key: replication_client
+    type: string
+    examples: ["replica1"]
+    brief: "Replication client."
+    stability: development
+  - key: postgresql.conflict.type
+    type: string
+    examples: ["lock"]
+    brief: "Conflict type: tablespace, lock, snapshot, bufferpin, deadlock."
+    stability: development
+  - key: postgresql.distance.function.name
+    type: string
+    examples: ["cosine"]
+    brief: "pgvector distance function: cosine, l2, inner_product, l1, hamming, jaccard."
+    stability: development
+  - key: postgresql.index.name
+    type: string
+    examples: ["pgbench_accounts_pkey"]
+    brief: "Index name."
+    stability: development
+entities:
+  - type: postgresql.instance
+    brief: "A PostgreSQL server instance."
+    stability: development
+    requirement_level: recommended
+    identity:
+      - ref: service.instance.id
+    description:
+      - ref: server.address
+      - ref: server.port
+      - ref: db.system.version
+      - ref: service.name
+      - ref: service.namespace
+  - type: postgresql.database
+    brief: "A database on a PostgreSQL server."
+    stability: development
+    requirement_level: recommended
+    identity:
+      - ref: postgresql.database.name
+  - type: postgresql.table
+    brief: "A table (`schema.table`) in a PostgreSQL database."
+    stability: development
+    requirement_level: recommended
+    identity:
+      - ref: postgresql.table.name
+    description:
+      - ref: postgresql.schema.name
+  - type: postgresql.index
+    brief: "An index on a PostgreSQL table."
+    stability: development
+    requirement_level: recommended
+    identity:
+      - ref: postgresql.index.name

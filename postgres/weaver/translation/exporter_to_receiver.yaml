@@ -1,0 +1,52 @@
+# postgres_exporter -> postgresql receiver
+#
+# Direction: postgres_exporter -> postgresql receiver.
+# Only 1:1 renames are expressible. The rest are lossy or need re-aggregation:
+#   * fan-in (several exporter metrics -> one receiver metric + discriminator attribute):
+#       pg_statio_user_tables_{heap,idx,toast,tidx}_blocks_{hit,read} -> postgresql.blocks_read{source=<kind>_<hit|read>}
+#       pg_stat_user_tables_n_tup_{ins,upd,del,hot_upd}              -> postgresql.operations{operation}
+#       pg_stat_user_tables_n_{live,dead}_tup                        -> postgresql.rows{state}
+#       pg_stat_database_conflicts_confl_*                           -> postgresql.query.conflicts{postgresql.conflict.type}
+#       pg_stat_bgwriter_buffers_clean / pg_stat_checkpointer_buffers_written_total -> postgresql.bgwriter.buffers.writes{source}
+#       pg_stat_checkpointer_num_{timed,requested}                   -> postgresql.bgwriter.checkpoint.count{type=scheduled|requested}
+#       pg_stat_checkpointer_{write,sync}_time_total                 -> postgresql.bgwriter.duration{type=write|sync}
+#   * datname/schemaname/relname labels are promoted back to resource attributes postgresql.database.name / postgresql.table.name
+#     (`schema.table`).
+#   * datid, server, indexrelname, and ~270 pg_settings_*, pg_stat_activity_*, pg_stat_statements_*, pg_stat_archiver_*, etc.
+#     have no receiver counterpart.
+file_format: 1.1.0
+schema_url: https://example.com/schemas/postgresql_receiver/0.1.0
+versions:
+  0.1.0:
+  0.0.0:
+    all:
+      changes:
+        - rename_attributes:
+            attribute_map:
+              datname: db.namespace
+              relname: db.collection.name
+    metrics:
+      changes:
+        - rename_metrics:
+            pg_stat_database_numbackends: postgresql.backends
+            pg_stat_bgwriter_buffers_alloc: postgresql.bgwriter.buffers.allocated
+            pg_stat_bgwriter_maxwritten_clean: postgresql.bgwriter.maxwritten
+            pg_stat_database_blks_hit: postgresql.blks_hit
+            pg_stat_database_blks_read: postgresql.blks_read
+            pg_stat_database_xact_commit: postgresql.commits
+            pg_stat_database_xact_rollback: postgresql.rollbacks
+            pg_stat_database_deadlocks: postgresql.deadlocks
+            pg_stat_database_temp_files: postgresql.temp_files
+            pg_stat_database_temp_bytes: postgresql.temp.io
+            pg_database_size_bytes: postgresql.db_size
+            pg_settings_max_connections: postgresql.connection.max
+            pg_stat_user_tables_table_size_bytes: postgresql.table.size
+            pg_stat_user_tables_seq_scan: postgresql.sequential_scans
+            pg_stat_user_tables_vacuum_count: postgresql.table.vacuum.count
+            pg_stat_database_tup_fetched: postgresql.tup_fetched
+            pg_stat_database_tup_inserted: postgresql.tup_inserted
+            pg_stat_database_tup_returned: postgresql.tup_returned
+            pg_stat_database_tup_updated: postgresql.tup_updated
+            pg_stat_database_tup_deleted: postgresql.tup_deleted
+            pg_locks_count: postgresql.database.locks
+            pg_stat_user_indexes_idx_scan: postgresql.index.scans

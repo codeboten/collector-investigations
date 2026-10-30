@@ -1,0 +1,537 @@
+file_format: definition/2
+metrics:
+  - name: postgresql.backends
+    brief: "Number of backends."
+    stability: development
+    requirement_level: recommended
+    instrument: updowncounter
+    unit: "1"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_database_numbackends"
+  - name: postgresql.bgwriter.buffers.allocated
+    brief: "Buffers allocated."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{buffers}"
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_bgwriter_buffers_alloc"
+  - name: postgresql.bgwriter.buffers.writes
+    brief: "Buffers written, by source."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{buffers}"
+    attributes:
+      - ref: source
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_bgwriter_buffers_clean (source=bgwriter)"
+  - name: postgresql.bgwriter.checkpoint.count
+    brief: "Checkpoints performed."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{checkpoints}"
+    attributes:
+      - ref: type
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_checkpointer_num_timed / num_requested"
+  - name: postgresql.bgwriter.duration
+    brief: "Time spent in checkpoint processing (sync/write)."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "ms"
+    attributes:
+      - ref: type
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_bgwriter_checkpoint_write_time / sync_time"
+  - name: postgresql.bgwriter.maxwritten
+    brief: "Times the bgwriter stopped for writing too many buffers."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_bgwriter_maxwritten_clean"
+  - name: postgresql.blks_hit
+    brief: "Disk blocks found in buffer cache."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{blks_hit}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_blks_hit"
+  - name: postgresql.blks_read
+    brief: "Disk blocks read."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{blks_read}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_blks_read"
+  - name: postgresql.blocks_read
+    brief: "Blocks read by source."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: source
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_statio_user_tables_{heap,idx,toast,tidx}_blocks_{hit,read}"
+  - name: postgresql.commits
+    brief: "Commits."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_database_xact_commit"
+  - name: postgresql.connection.max
+    brief: "Configured max connections."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{connections}"
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_settings_max_connections"
+  - name: postgresql.database.count
+    brief: "Number of user databases."
+    stability: development
+    requirement_level: recommended
+    instrument: updowncounter
+    unit: "{databases}"
+    annotations:
+      enabled_by_default: true
+  - name: postgresql.database.locks
+    brief: "Locks by relation, mode and type."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{lock}"
+    attributes:
+      - ref: relation
+        requirement_level: recommended
+      - ref: mode
+        requirement_level: recommended
+      - ref: lock_type
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_locks_count"
+  - name: postgresql.db_size
+    brief: "Database disk usage."
+    stability: development
+    requirement_level: recommended
+    instrument: updowncounter
+    unit: "By"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_database_size_bytes"
+  - name: postgresql.deadlocks
+    brief: "Deadlocks detected."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{deadlock}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_deadlocks"
+  - name: postgresql.function.calls
+    brief: "Function calls (needs track_functions)."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{call}"
+    attributes:
+      - ref: function
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.index.scans
+    brief: "Index scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{scans}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+      - ref: postgresql.index.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_user_indexes_idx_scan"
+  - name: postgresql.index.size
+    brief: "Index size."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+      - ref: postgresql.index.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_relation_size_bytes (indexes)"
+  - name: postgresql.operations
+    brief: "Row operations."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: operation
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_user_tables_n_tup_{ins,upd,del,hot_upd}"
+  - name: postgresql.query.conflicts
+    brief: "Queries canceled by recovery conflicts."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{query}"
+    attributes:
+      - ref: postgresql.conflict.type
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_conflicts_confl_*"
+  - name: postgresql.query.execution.time
+    brief: "Total query execution time."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "s"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.replication.data_delay
+    brief: "Replication lag in bytes."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+    attributes:
+      - ref: replication_client
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_replication_lag_seconds (different unit)"
+  - name: postgresql.rollbacks
+    brief: "Rollbacks."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_database_xact_rollback"
+  - name: postgresql.rows
+    brief: "Live/dead rows."
+    stability: development
+    requirement_level: recommended
+    instrument: updowncounter
+    unit: "1"
+    attributes:
+      - ref: state
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_user_tables_n_{live,dead}_tup"
+  - name: postgresql.sequential_scans
+    brief: "Sequential scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{sequential_scan}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_user_tables_seq_scan"
+  - name: postgresql.table.count
+    brief: "Number of user tables."
+    stability: development
+    requirement_level: recommended
+    instrument: updowncounter
+    unit: "{table}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+  - name: postgresql.table.size
+    brief: "Table disk usage."
+    stability: development
+    requirement_level: recommended
+    instrument: updowncounter
+    unit: "By"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_user_tables_table_size_bytes"
+  - name: postgresql.table.vacuum.count
+    brief: "Manual vacuums."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{vacuum}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+      - ref: db.collection.name
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true
+      postgres_exporter_equivalent: "pg_stat_user_tables_vacuum_count"
+  - name: postgresql.temp.io
+    brief: "Temp file bytes written."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "By"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_temp_bytes"
+  - name: postgresql.temp_files
+    brief: "Temp files created."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{temp_file}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_temp_files"
+  - name: postgresql.tup_deleted
+    brief: "Rows deleted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{tup_deleted}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_tup_deleted"
+  - name: postgresql.tup_fetched
+    brief: "Rows fetched."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{tup_fetched}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_tup_fetched"
+  - name: postgresql.tup_inserted
+    brief: "Rows inserted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{tup_inserted}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_tup_inserted"
+  - name: postgresql.tup_returned
+    brief: "Rows returned."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{tup_returned}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_tup_returned"
+  - name: postgresql.tup_updated
+    brief: "Rows updated."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{tup_updated}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+      postgres_exporter_equivalent: "pg_stat_database_tup_updated"
+  - name: postgresql.vector.insert.duration
+    brief: "pgvector insert time."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "s"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.vector.insert.rows
+    brief: "pgvector rows inserted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{vectors}"
+    attributes:
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.vector.search.calls
+    brief: "pgvector searches."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{search}"
+    attributes:
+      - ref: postgresql.distance.function.name
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.vector.search.duration
+    brief: "pgvector search time."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "s"
+    attributes:
+      - ref: postgresql.distance.function.name
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.vector.search.rows_returned
+    brief: "pgvector rows returned."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{rows}"
+    attributes:
+      - ref: postgresql.distance.function.name
+        requirement_level: recommended
+      - ref: db.namespace
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.wal.age
+    brief: "Age of the oldest unarchived WAL file."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    annotations:
+      enabled_by_default: true
+  - name: postgresql.wal.delay
+    brief: "WAL delay by operation."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: operation
+        requirement_level: recommended
+      - ref: replication_client
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: false
+  - name: postgresql.wal.lag
+    brief: "WAL lag by operation."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: operation
+        requirement_level: recommended
+      - ref: replication_client
+        requirement_level: recommended
+    annotations:
+      enabled_by_default: true

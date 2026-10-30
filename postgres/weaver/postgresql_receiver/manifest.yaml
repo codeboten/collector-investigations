@@ -1,0 +1,5 @@
+file_format: definition_manifest/2.0
+name: postgresql_receiver
+description: "Metrics emitted by the OpenTelemetry Collector Contrib postgresql receiver (v0.163)."
+semconv_version: 0.1.0
+schema_url: https://example.com/schemas/postgresql_receiver/0.1.0

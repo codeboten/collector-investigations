@@ -1,0 +1,5 @@
+file_format: definition_manifest/2.0
+name: postgres_exporter
+description: "Metrics emitted by the embedded prometheus-community postgres_exporter receiver (opentelemetry-collector-prometheus v0.163)."
+semconv_version: 0.1.0
+schema_url: https://example.com/schemas/postgres_exporter/0.1.0

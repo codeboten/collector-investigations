@@ -1,0 +1,2620 @@
+file_format: definition/2
+metrics:
+  - name: pg_up
+    brief: "Whether the last scrape could reach the server."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_postmaster_start_time_seconds
+    brief: "Postmaster start time (unix)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_database_size_bytes
+    brief: "Database size."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.db_size"
+  - name: pg_stat_database_numbackends
+    brief: "Connected backends."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.backends"
+  - name: pg_stat_database_xact_commit
+    brief: "Commits."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{transaction}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.commits"
+  - name: pg_stat_database_xact_rollback
+    brief: "Rollbacks."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{transaction}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.rollbacks"
+  - name: pg_stat_database_blks_read
+    brief: "Disk blocks read."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blks_read"
+  - name: pg_stat_database_blks_hit
+    brief: "Buffer cache hits."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blks_hit"
+  - name: pg_stat_database_tup_returned
+    brief: "Rows returned."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.tup_returned"
+  - name: pg_stat_database_tup_fetched
+    brief: "Rows fetched."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.tup_fetched"
+  - name: pg_stat_database_tup_inserted
+    brief: "Rows inserted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.tup_inserted"
+  - name: pg_stat_database_tup_updated
+    brief: "Rows updated."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.tup_updated"
+  - name: pg_stat_database_tup_deleted
+    brief: "Rows deleted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.tup_deleted"
+  - name: pg_stat_database_conflicts
+    brief: "Recovery-conflict cancellations."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+  - name: pg_stat_database_conflicts_confl_bufferpin
+    brief: "Conflicts: buffer pin."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.query.conflicts{postgresql.conflict.type=bufferpin}"
+  - name: pg_stat_database_conflicts_confl_deadlock
+    brief: "Conflicts: deadlock."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.query.conflicts{postgresql.conflict.type=deadlock}"
+  - name: pg_stat_database_conflicts_confl_lock
+    brief: "Conflicts: lock."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.query.conflicts{postgresql.conflict.type=lock}"
+  - name: pg_stat_database_conflicts_confl_snapshot
+    brief: "Conflicts: snapshot."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.query.conflicts{postgresql.conflict.type=snapshot}"
+  - name: pg_stat_database_conflicts_confl_tablespace
+    brief: "Conflicts: tablespace."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.query.conflicts{postgresql.conflict.type=tablespace}"
+  - name: pg_stat_database_temp_files
+    brief: "Temp files created."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{file}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.temp_files"
+  - name: pg_stat_database_temp_bytes
+    brief: "Temp file bytes written."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "By"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.temp.io"
+  - name: pg_stat_database_deadlocks
+    brief: "Deadlocks."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{deadlock}"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.deadlocks"
+  - name: pg_stat_database_blk_read_time
+    brief: "Time reading blocks."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "ms"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+  - name: pg_stat_database_blk_write_time
+    brief: "Time writing blocks."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "ms"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+  - name: pg_stat_database_stats_reset
+    brief: "Last stats reset (unix)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: datid
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+  - name: pg_stat_bgwriter_buffers_alloc
+    brief: "Buffers allocated."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{buffer}"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.buffers.allocated"
+  - name: pg_stat_bgwriter_buffers_clean
+    brief: "Buffers written by bgwriter."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{buffer}"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.buffers.writes{source=bgwriter}"
+  - name: pg_stat_bgwriter_maxwritten_clean
+    brief: "Bgwriter stops for max pages."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{event}"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.maxwritten"
+  - name: pg_stat_checkpointer_num_timed
+    brief: "Scheduled checkpoints."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{checkpoint}"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.checkpoint.count{type=scheduled}"
+  - name: pg_stat_checkpointer_num_requested
+    brief: "Requested checkpoints."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{checkpoint}"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.checkpoint.count{type=requested}"
+  - name: pg_stat_checkpointer_write_time_total
+    brief: "Checkpoint write time."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "ms"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.duration{type=write}"
+  - name: pg_stat_checkpointer_sync_time_total
+    brief: "Checkpoint sync time."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "ms"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.duration{type=sync}"
+  - name: pg_stat_checkpointer_buffers_written_total
+    brief: "Buffers written by checkpoints."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{buffer}"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.bgwriter.buffers.writes{source=checkpoints}"
+  - name: pg_locks_count
+    brief: "Locks per database and mode."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{lock}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: mode
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.database.locks"
+  - name: pg_stat_activity_count
+    brief: "Backends per database and state."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{connection}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: state
+        requirement_level: recommended
+  - name: pg_stat_activity_max_tx_duration
+    brief: "Longest transaction."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: state
+        requirement_level: recommended
+  - name: pg_stat_user_tables_seq_scan
+    brief: "Sequential scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{scan}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.sequential_scans"
+  - name: pg_stat_user_tables_seq_tup_read
+    brief: "Rows fetched by seq scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_idx_scan
+    brief: "Index scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{scan}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_idx_tup_fetch
+    brief: "Rows fetched by index scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_n_tup_ins
+    brief: "Rows inserted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.operations{operation=ins}"
+  - name: pg_stat_user_tables_n_tup_upd
+    brief: "Rows updated."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.operations{operation=upd}"
+  - name: pg_stat_user_tables_n_tup_del
+    brief: "Rows deleted."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.operations{operation=del}"
+  - name: pg_stat_user_tables_n_tup_hot_upd
+    brief: "HOT updates."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.operations{operation=hot_upd}"
+  - name: pg_stat_user_tables_n_live_tup
+    brief: "Estimated live rows."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.rows{state=live}"
+  - name: pg_stat_user_tables_n_dead_tup
+    brief: "Estimated dead rows."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.rows{state=dead}"
+  - name: pg_stat_user_tables_n_mod_since_analyze
+    brief: "Rows modified since last analyze."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{row}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_last_vacuum
+    brief: "Last manual vacuum (unix)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_last_autovacuum
+    brief: "Last autovacuum (unix)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_last_analyze
+    brief: "Last manual analyze (unix)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_last_autoanalyze
+    brief: "Last autoanalyze (unix)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_vacuum_count
+    brief: "Manual vacuums."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{vacuum}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.table.vacuum.count"
+  - name: pg_stat_user_tables_autovacuum_count
+    brief: "Autovacuums."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{vacuum}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_analyze_count
+    brief: "Manual analyzes."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{analyze}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_autoanalyze_count
+    brief: "Autoanalyzes."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{analyze}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+  - name: pg_stat_user_tables_table_size_bytes
+    brief: "Table size."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.table.size"
+  - name: pg_statio_user_tables_heap_blocks_read
+    brief: "heap blocks read."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=heap_read}"
+  - name: pg_statio_user_tables_heap_blocks_hit
+    brief: "heap blocks hit."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=heap_hit}"
+  - name: pg_statio_user_tables_idx_blocks_read
+    brief: "idx blocks read."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=idx_read}"
+  - name: pg_statio_user_tables_idx_blocks_hit
+    brief: "idx blocks hit."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=idx_hit}"
+  - name: pg_statio_user_tables_toast_blocks_read
+    brief: "toast blocks read."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=toast_read}"
+  - name: pg_statio_user_tables_toast_blocks_hit
+    brief: "toast blocks hit."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=toast_hit}"
+  - name: pg_statio_user_tables_tidx_blocks_read
+    brief: "tidx blocks read."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=tidx_read}"
+  - name: pg_statio_user_tables_tidx_blocks_hit
+    brief: "tidx blocks hit."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{block}"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.blocks_read{source=tidx_hit}"
+  - name: pg_stat_user_indexes_idx_scan
+    brief: "Index scans."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+      - ref: indexrelname
+        requirement_level: recommended
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.index.scans"
+  - name: pg_stat_user_indexes_idx_tup_read
+    brief: "Index entries returned."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+      - ref: indexrelname
+        requirement_level: recommended
+  - name: pg_stat_user_indexes_idx_tup_fetch
+    brief: "Live rows fetched."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+    attributes:
+      - ref: datname
+        requirement_level: recommended
+      - ref: schemaname
+        requirement_level: recommended
+      - ref: relname
+        requirement_level: recommended
+      - ref: indexrelname
+        requirement_level: recommended
+  - name: pg_stat_archiver_archived_count
+    brief: "WAL files archived."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{file}"
+  - name: pg_stat_archiver_failed_count
+    brief: "WAL archive failures."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{attempt}"
+  - name: pg_stat_replication_pg_current_wal_lsn_bytes
+    brief: "Current WAL LSN."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_replication_lag_seconds
+    brief: "Replica lag."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.wal.lag"
+  - name: pg_replication_is_replica
+    brief: "1 if in recovery."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_replication_slots_active
+    brief: "Slot active."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+    attributes:
+      - ref: slot_name
+        requirement_level: recommended
+  - name: pg_wal_segments
+    brief: "WAL segments."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "{segment}"
+  - name: pg_wal_size_bytes
+    brief: "WAL size."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_stat_statements_calls_total
+    brief: "Statement calls."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{call}"
+    attributes:
+      - ref: usename
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+      - ref: queryid
+        requirement_level: recommended
+  - name: pg_stat_statements_seconds_total
+    brief: "Statement time."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "s"
+    attributes:
+      - ref: usename
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+      - ref: queryid
+        requirement_level: recommended
+  - name: pg_stat_statements_rows_total
+    brief: "Rows returned."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "{row}"
+    attributes:
+      - ref: usename
+        requirement_level: recommended
+      - ref: datname
+        requirement_level: recommended
+      - ref: queryid
+        requirement_level: recommended
+  - name: pg_settings_max_connections
+    brief: "max_connections setting."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+    annotations:
+      postgresql_receiver_equivalent: "postgresql.connection.max"
+  - name: pg_static
+    brief: "Static server info (version, server)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+    attributes:
+      - ref: server
+        requirement_level: recommended
+      - ref: version
+        requirement_level: recommended
+  - name: pg_exporter_scrapes_total
+    brief: "Exporter scrapes."
+    stability: development
+    requirement_level: recommended
+    instrument: counter
+    unit: "1"
+  - name: pg_scrape_collector_success
+    brief: "Collector success."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+    attributes:
+      - ref: collector
+        requirement_level: recommended
+  - name: pg_scrape_collector_duration_seconds
+    brief: "Collector duration."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+    attributes:
+      - ref: collector
+        requirement_level: recommended
+  - name: pg_settings_allow_alter_system
+    brief: "Server setting allow alter system (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_allow_in_place_tablespaces
+    brief: "Server setting allow in place tablespaces (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_allow_system_table_mods
+    brief: "Server setting allow system table mods (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_archive_timeout_seconds
+    brief: "Server setting archive timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_array_nulls
+    brief: "Server setting array nulls (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_authentication_timeout_seconds
+    brief: "Server setting authentication timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_autovacuum
+    brief: "Server setting autovacuum (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_analyze_scale_factor
+    brief: "Server setting autovacuum analyze scale factor (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_analyze_threshold
+    brief: "Server setting autovacuum analyze threshold (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_freeze_max_age
+    brief: "Server setting autovacuum freeze max age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_max_workers
+    brief: "Server setting autovacuum max workers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_multixact_freeze_max_age
+    brief: "Server setting autovacuum multixact freeze max age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_naptime_seconds
+    brief: "Server setting autovacuum naptime seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_autovacuum_vacuum_cost_delay_seconds
+    brief: "Server setting autovacuum vacuum cost delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_autovacuum_vacuum_cost_limit
+    brief: "Server setting autovacuum vacuum cost limit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_vacuum_insert_scale_factor
+    brief: "Server setting autovacuum vacuum insert scale factor (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_vacuum_insert_threshold
+    brief: "Server setting autovacuum vacuum insert threshold (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_vacuum_scale_factor
+    brief: "Server setting autovacuum vacuum scale factor (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_vacuum_threshold
+    brief: "Server setting autovacuum vacuum threshold (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_autovacuum_work_mem_bytes
+    brief: "Server setting autovacuum work mem bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_backend_flush_after_bytes
+    brief: "Server setting backend flush after bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_bgwriter_delay_seconds
+    brief: "Server setting bgwriter delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_bgwriter_flush_after_bytes
+    brief: "Server setting bgwriter flush after bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_bgwriter_lru_maxpages
+    brief: "Server setting bgwriter lru maxpages (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_bgwriter_lru_multiplier
+    brief: "Server setting bgwriter lru multiplier (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_block_size
+    brief: "Server setting block size (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_bonjour
+    brief: "Server setting bonjour (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_check_function_bodies
+    brief: "Server setting check function bodies (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_checkpoint_completion_target
+    brief: "Server setting checkpoint completion target (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_checkpoint_flush_after_bytes
+    brief: "Server setting checkpoint flush after bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_checkpoint_timeout_seconds
+    brief: "Server setting checkpoint timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_checkpoint_warning_seconds
+    brief: "Server setting checkpoint warning seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_client_connection_check_interval_seconds
+    brief: "Server setting client connection check interval seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_commit_delay
+    brief: "Server setting commit delay (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_commit_siblings
+    brief: "Server setting commit siblings (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_commit_timestamp_buffers_bytes
+    brief: "Server setting commit timestamp buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_cpu_index_tuple_cost
+    brief: "Server setting cpu index tuple cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_cpu_operator_cost
+    brief: "Server setting cpu operator cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_cpu_tuple_cost
+    brief: "Server setting cpu tuple cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_cursor_tuple_fraction
+    brief: "Server setting cursor tuple fraction (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_data_checksums
+    brief: "Server setting data checksums (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_data_directory_mode
+    brief: "Server setting data directory mode (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_data_sync_retry
+    brief: "Server setting data sync retry (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_deadlock_timeout_seconds
+    brief: "Server setting deadlock timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_debug_assertions
+    brief: "Server setting debug assertions (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_debug_discard_caches
+    brief: "Server setting debug discard caches (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_debug_pretty_print
+    brief: "Server setting debug pretty print (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_debug_print_parse
+    brief: "Server setting debug print parse (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_debug_print_plan
+    brief: "Server setting debug print plan (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_debug_print_rewritten
+    brief: "Server setting debug print rewritten (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_default_statistics_target
+    brief: "Server setting default statistics target (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_default_transaction_deferrable
+    brief: "Server setting default transaction deferrable (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_default_transaction_read_only
+    brief: "Server setting default transaction read only (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_effective_cache_size_bytes
+    brief: "Server setting effective cache size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_effective_io_concurrency
+    brief: "Server setting effective io concurrency (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_async_append
+    brief: "Server setting enable async append (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_bitmapscan
+    brief: "Server setting enable bitmapscan (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_gathermerge
+    brief: "Server setting enable gathermerge (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_group_by_reordering
+    brief: "Server setting enable group by reordering (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_hashagg
+    brief: "Server setting enable hashagg (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_hashjoin
+    brief: "Server setting enable hashjoin (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_incremental_sort
+    brief: "Server setting enable incremental sort (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_indexonlyscan
+    brief: "Server setting enable indexonlyscan (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_indexscan
+    brief: "Server setting enable indexscan (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_material
+    brief: "Server setting enable material (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_memoize
+    brief: "Server setting enable memoize (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_mergejoin
+    brief: "Server setting enable mergejoin (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_nestloop
+    brief: "Server setting enable nestloop (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_parallel_append
+    brief: "Server setting enable parallel append (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_parallel_hash
+    brief: "Server setting enable parallel hash (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_partition_pruning
+    brief: "Server setting enable partition pruning (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_partitionwise_aggregate
+    brief: "Server setting enable partitionwise aggregate (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_partitionwise_join
+    brief: "Server setting enable partitionwise join (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_presorted_aggregate
+    brief: "Server setting enable presorted aggregate (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_seqscan
+    brief: "Server setting enable seqscan (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_sort
+    brief: "Server setting enable sort (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_enable_tidscan
+    brief: "Server setting enable tidscan (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_escape_string_warning
+    brief: "Server setting escape string warning (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_event_triggers
+    brief: "Server setting event triggers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_exit_on_error
+    brief: "Server setting exit on error (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_extra_float_digits
+    brief: "Server setting extra float digits (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_from_collapse_limit
+    brief: "Server setting from collapse limit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_fsync
+    brief: "Server setting fsync (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_full_page_writes
+    brief: "Server setting full page writes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo
+    brief: "Server setting geqo (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo_effort
+    brief: "Server setting geqo effort (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo_generations
+    brief: "Server setting geqo generations (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo_pool_size
+    brief: "Server setting geqo pool size (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo_seed
+    brief: "Server setting geqo seed (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo_selection_bias
+    brief: "Server setting geqo selection bias (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_geqo_threshold
+    brief: "Server setting geqo threshold (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_gin_fuzzy_search_limit
+    brief: "Server setting gin fuzzy search limit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_gin_pending_list_limit_bytes
+    brief: "Server setting gin pending list limit bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_gss_accept_delegation
+    brief: "Server setting gss accept delegation (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_hash_mem_multiplier
+    brief: "Server setting hash mem multiplier (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_hot_standby
+    brief: "Server setting hot standby (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_hot_standby_feedback
+    brief: "Server setting hot standby feedback (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_huge_page_size_bytes
+    brief: "Server setting huge page size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_idle_in_transaction_session_timeout_seconds
+    brief: "Server setting idle in transaction session timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_idle_session_timeout_seconds
+    brief: "Server setting idle session timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_ignore_checksum_failure
+    brief: "Server setting ignore checksum failure (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_ignore_invalid_pages
+    brief: "Server setting ignore invalid pages (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_ignore_system_indexes
+    brief: "Server setting ignore system indexes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_in_hot_standby
+    brief: "Server setting in hot standby (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_integer_datetimes
+    brief: "Server setting integer datetimes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_io_combine_limit_bytes
+    brief: "Server setting io combine limit bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_jit
+    brief: "Server setting jit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_above_cost
+    brief: "Server setting jit above cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_debugging_support
+    brief: "Server setting jit debugging support (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_dump_bitcode
+    brief: "Server setting jit dump bitcode (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_expressions
+    brief: "Server setting jit expressions (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_inline_above_cost
+    brief: "Server setting jit inline above cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_optimize_above_cost
+    brief: "Server setting jit optimize above cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_profiling_support
+    brief: "Server setting jit profiling support (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_jit_tuple_deforming
+    brief: "Server setting jit tuple deforming (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_join_collapse_limit
+    brief: "Server setting join collapse limit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_krb_caseins_users
+    brief: "Server setting krb caseins users (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_lo_compat_privileges
+    brief: "Server setting lo compat privileges (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_lock_timeout_seconds
+    brief: "Server setting lock timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_log_autovacuum_min_duration_seconds
+    brief: "Server setting log autovacuum min duration seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_log_checkpoints
+    brief: "Server setting log checkpoints (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_connections
+    brief: "Server setting log connections (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_disconnections
+    brief: "Server setting log disconnections (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_duration
+    brief: "Server setting log duration (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_executor_stats
+    brief: "Server setting log executor stats (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_file_mode
+    brief: "Server setting log file mode (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_hostname
+    brief: "Server setting log hostname (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_lock_waits
+    brief: "Server setting log lock waits (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_min_duration_sample_seconds
+    brief: "Server setting log min duration sample seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_log_min_duration_statement_seconds
+    brief: "Server setting log min duration statement seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_log_parameter_max_length_bytes
+    brief: "Server setting log parameter max length bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_log_parameter_max_length_on_error_bytes
+    brief: "Server setting log parameter max length on error bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_log_parser_stats
+    brief: "Server setting log parser stats (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_planner_stats
+    brief: "Server setting log planner stats (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_recovery_conflict_waits
+    brief: "Server setting log recovery conflict waits (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_replication_commands
+    brief: "Server setting log replication commands (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_rotation_age_seconds
+    brief: "Server setting log rotation age seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_log_rotation_size_bytes
+    brief: "Server setting log rotation size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_log_startup_progress_interval_seconds
+    brief: "Server setting log startup progress interval seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_log_statement_sample_rate
+    brief: "Server setting log statement sample rate (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_statement_stats
+    brief: "Server setting log statement stats (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_temp_files_bytes
+    brief: "Server setting log temp files bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_log_transaction_sample_rate
+    brief: "Server setting log transaction sample rate (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_log_truncate_on_rotation
+    brief: "Server setting log truncate on rotation (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_logging_collector
+    brief: "Server setting logging collector (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_logical_decoding_work_mem_bytes
+    brief: "Server setting logical decoding work mem bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_maintenance_io_concurrency
+    brief: "Server setting maintenance io concurrency (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_maintenance_work_mem_bytes
+    brief: "Server setting maintenance work mem bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_max_files_per_process
+    brief: "Server setting max files per process (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_function_args
+    brief: "Server setting max function args (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_identifier_length
+    brief: "Server setting max identifier length (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_index_keys
+    brief: "Server setting max index keys (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_locks_per_transaction
+    brief: "Server setting max locks per transaction (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_logical_replication_workers
+    brief: "Server setting max logical replication workers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_notify_queue_pages
+    brief: "Server setting max notify queue pages (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_parallel_apply_workers_per_subscription
+    brief: "Server setting max parallel apply workers per subscription (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_parallel_maintenance_workers
+    brief: "Server setting max parallel maintenance workers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_parallel_workers
+    brief: "Server setting max parallel workers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_parallel_workers_per_gather
+    brief: "Server setting max parallel workers per gather (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_pred_locks_per_page
+    brief: "Server setting max pred locks per page (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_pred_locks_per_relation
+    brief: "Server setting max pred locks per relation (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_pred_locks_per_transaction
+    brief: "Server setting max pred locks per transaction (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_prepared_transactions
+    brief: "Server setting max prepared transactions (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_replication_slots
+    brief: "Server setting max replication slots (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_slot_wal_keep_size_bytes
+    brief: "Server setting max slot wal keep size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_max_stack_depth_bytes
+    brief: "Server setting max stack depth bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_max_standby_archive_delay_seconds
+    brief: "Server setting max standby archive delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_max_standby_streaming_delay_seconds
+    brief: "Server setting max standby streaming delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_max_sync_workers_per_subscription
+    brief: "Server setting max sync workers per subscription (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_wal_senders
+    brief: "Server setting max wal senders (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_max_wal_size_bytes
+    brief: "Server setting max wal size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_max_worker_processes
+    brief: "Server setting max worker processes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_min_dynamic_shared_memory_bytes
+    brief: "Server setting min dynamic shared memory bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_min_parallel_index_scan_size_bytes
+    brief: "Server setting min parallel index scan size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_min_parallel_table_scan_size_bytes
+    brief: "Server setting min parallel table scan size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_min_wal_size_bytes
+    brief: "Server setting min wal size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_multixact_member_buffers_bytes
+    brief: "Server setting multixact member buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_multixact_offset_buffers_bytes
+    brief: "Server setting multixact offset buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_notify_buffers_bytes
+    brief: "Server setting notify buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_parallel_leader_participation
+    brief: "Server setting parallel leader participation (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_parallel_setup_cost
+    brief: "Server setting parallel setup cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_parallel_tuple_cost
+    brief: "Server setting parallel tuple cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_pg_stat_statements_max
+    brief: "Server setting pg stat statements max (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_pg_stat_statements_save
+    brief: "Server setting pg stat statements save (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_pg_stat_statements_track_planning
+    brief: "Server setting pg stat statements track planning (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_pg_stat_statements_track_utility
+    brief: "Server setting pg stat statements track utility (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_port
+    brief: "Server setting port (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_post_auth_delay_seconds
+    brief: "Server setting post auth delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_pre_auth_delay_seconds
+    brief: "Server setting pre auth delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_quote_all_identifiers
+    brief: "Server setting quote all identifiers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_random_page_cost
+    brief: "Server setting random page cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_recovery_min_apply_delay_seconds
+    brief: "Server setting recovery min apply delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_recovery_target_inclusive
+    brief: "Server setting recovery target inclusive (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_recursive_worktable_factor
+    brief: "Server setting recursive worktable factor (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_remove_temp_files_after_crash
+    brief: "Server setting remove temp files after crash (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_reserved_connections
+    brief: "Server setting reserved connections (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_restart_after_crash
+    brief: "Server setting restart after crash (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_row_security
+    brief: "Server setting row security (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_scram_iterations
+    brief: "Server setting scram iterations (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_segment_size_bytes
+    brief: "Server setting segment size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_send_abort_for_crash
+    brief: "Server setting send abort for crash (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_send_abort_for_kill
+    brief: "Server setting send abort for kill (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_seq_page_cost
+    brief: "Server setting seq page cost (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_serializable_buffers_bytes
+    brief: "Server setting serializable buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_server_version_num
+    brief: "Server setting server version num (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_shared_buffers_bytes
+    brief: "Server setting shared buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_shared_memory_size_bytes
+    brief: "Server setting shared memory size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_shared_memory_size_in_huge_pages
+    brief: "Server setting shared memory size in huge pages (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_ssl
+    brief: "Server setting ssl (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_ssl_passphrase_command_supports_reload
+    brief: "Server setting ssl passphrase command supports reload (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_ssl_prefer_server_ciphers
+    brief: "Server setting ssl prefer server ciphers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_standard_conforming_strings
+    brief: "Server setting standard conforming strings (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_statement_timeout_seconds
+    brief: "Server setting statement timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_subtransaction_buffers_bytes
+    brief: "Server setting subtransaction buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_summarize_wal
+    brief: "Server setting summarize wal (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_superuser_reserved_connections
+    brief: "Server setting superuser reserved connections (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_sync_replication_slots
+    brief: "Server setting sync replication slots (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_synchronize_seqscans
+    brief: "Server setting synchronize seqscans (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_syslog_sequence_numbers
+    brief: "Server setting syslog sequence numbers (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_syslog_split_messages
+    brief: "Server setting syslog split messages (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_tcp_keepalives_count
+    brief: "Server setting tcp keepalives count (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_tcp_keepalives_idle_seconds
+    brief: "Server setting tcp keepalives idle seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_tcp_keepalives_interval_seconds
+    brief: "Server setting tcp keepalives interval seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_tcp_user_timeout_seconds
+    brief: "Server setting tcp user timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_temp_buffers_bytes
+    brief: "Server setting temp buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_temp_file_limit_bytes
+    brief: "Server setting temp file limit bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_trace_connection_negotiation
+    brief: "Server setting trace connection negotiation (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_trace_notify
+    brief: "Server setting trace notify (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_trace_sort
+    brief: "Server setting trace sort (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_track_activities
+    brief: "Server setting track activities (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_track_activity_query_size_bytes
+    brief: "Server setting track activity query size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_track_commit_timestamp
+    brief: "Server setting track commit timestamp (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_track_counts
+    brief: "Server setting track counts (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_track_io_timing
+    brief: "Server setting track io timing (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_track_wal_io_timing
+    brief: "Server setting track wal io timing (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_transaction_buffers_bytes
+    brief: "Server setting transaction buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_transaction_deferrable
+    brief: "Server setting transaction deferrable (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_transaction_read_only
+    brief: "Server setting transaction read only (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_transaction_timeout_seconds
+    brief: "Server setting transaction timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_transform_null_equals
+    brief: "Server setting transform null equals (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_unix_socket_permissions
+    brief: "Server setting unix socket permissions (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_update_process_title
+    brief: "Server setting update process title (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_buffer_usage_limit_bytes
+    brief: "Server setting vacuum buffer usage limit bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_vacuum_cost_delay_seconds
+    brief: "Server setting vacuum cost delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_vacuum_cost_limit
+    brief: "Server setting vacuum cost limit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_cost_page_dirty
+    brief: "Server setting vacuum cost page dirty (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_cost_page_hit
+    brief: "Server setting vacuum cost page hit (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_cost_page_miss
+    brief: "Server setting vacuum cost page miss (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_failsafe_age
+    brief: "Server setting vacuum failsafe age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_freeze_min_age
+    brief: "Server setting vacuum freeze min age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_freeze_table_age
+    brief: "Server setting vacuum freeze table age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_multixact_failsafe_age
+    brief: "Server setting vacuum multixact failsafe age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_multixact_freeze_min_age
+    brief: "Server setting vacuum multixact freeze min age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_vacuum_multixact_freeze_table_age
+    brief: "Server setting vacuum multixact freeze table age (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_wal_block_size
+    brief: "Server setting wal block size (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_wal_buffers_bytes
+    brief: "Server setting wal buffers bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_wal_decode_buffer_size_bytes
+    brief: "Server setting wal decode buffer size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_wal_init_zero
+    brief: "Server setting wal init zero (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_wal_keep_size_bytes
+    brief: "Server setting wal keep size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_wal_log_hints
+    brief: "Server setting wal log hints (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_wal_receiver_create_temp_slot
+    brief: "Server setting wal receiver create temp slot (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_wal_receiver_status_interval_seconds
+    brief: "Server setting wal receiver status interval seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_wal_receiver_timeout_seconds
+    brief: "Server setting wal receiver timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_wal_recycle
+    brief: "Server setting wal recycle (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
+  - name: pg_settings_wal_retrieve_retry_interval_seconds
+    brief: "Server setting wal retrieve retry interval seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_wal_segment_size_bytes
+    brief: "Server setting wal segment size bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_wal_sender_timeout_seconds
+    brief: "Server setting wal sender timeout seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_wal_skip_threshold_bytes
+    brief: "Server setting wal skip threshold bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_wal_summary_keep_time_seconds
+    brief: "Server setting wal summary keep time seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_wal_writer_delay_seconds
+    brief: "Server setting wal writer delay seconds (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "s"
+  - name: pg_settings_wal_writer_flush_after_bytes
+    brief: "Server setting wal writer flush after bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_work_mem_bytes
+    brief: "Server setting work mem bytes (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "By"
+  - name: pg_settings_zero_damaged_pages
+    brief: "Server setting zero damaged pages (pg_settings)."
+    stability: development
+    requirement_level: recommended
+    instrument: gauge
+    unit: "1"
